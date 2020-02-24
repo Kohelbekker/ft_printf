@@ -2,12 +2,12 @@
 
 <h2>Mandatory part:</h2>
 
-* Manage the following conversions: `s`, `S`, `p`, `d`, `D`, `i`, `o`, `O`, `u`, `U`, `x`, `X`, `c` & `C`
+* Manage the following conversions: `s`, `p`, `d`, `i`, `o`, `u`, `x`, `X` & `c` 
 * Manage `%%`
 * Manage the flags `#`, `0`, `-`, `+` & `space`
 * Manage the minimum field-width
 * Manage the precision
-* Manage the flags `hh`, `h`, `l`, `ll`, `j`, & `z`.
+* Manage the flags `hh`, `h`, `l`, `ll`, & `L`.
 
 
 <h2>Flags:</h2>
