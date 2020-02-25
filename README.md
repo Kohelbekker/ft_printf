@@ -114,3 +114,4 @@ Used with a, A, e, E, f, F, g or G it forces the written output to contain a dec
 <h2>Links:</h2>
 1. https://stackoverflow.com/questions/1449805/how-to-format-a-number-from-1123456789-to-1-123-456-789-in-c
 2. http://www.cplusplus.com/reference/cstdio/printf/
+3. https://linux.die.net/man/3/stdarg
