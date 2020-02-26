@@ -35,7 +35,6 @@ void  test_bonus()
   printf("Padding of %s: [%5d]\n", "five", -42);
   printf("Padding of %s: [%-5d]\n", "five", -42);
   
-  
  ft_printf("Padding of %s: [%05d]\n", "five", -42);
  ft_printf("Padding of %s: [%5d]\n", "five", -42);
  ft_printf("Padding of %s: [%-5d]\n", "five", -42);

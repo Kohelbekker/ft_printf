@@ -4,6 +4,24 @@
 #include <stdlib.h>
 #include "libft/libft.h"
 
+void		init_struct(t_args *b)
+{
+	b->type = NULL;
+	b->i = 0;
+	b->zero_x = 0;
+	b->zero = 0;
+	b->minus = 0;
+	b->plus = 0;
+	b->prec = 0;
+	b->width = 0;
+	b->space = 0;
+	b->hh = 0;
+	b->h = 0;
+	b->ll = 0;
+	b->l = 0;
+	b->l_cap = 0;
+}
+
 int     check_length(int i)
 {
     int length;
@@ -36,33 +54,33 @@ int     do_padding(char *str, int pad, int zero_flag)
 }
 
 void		flag_selector(char **tmp, va_list argptr)
-{		
+{
     int     zero_flag;
     int     pad;
     int     d;
 	char    *str;
-	
+
 	d = 0;
-	pad = 0;	
+	pad = 0;
     zero_flag = 0;
 	if (**tmp >= '0' && **tmp <= '9')
 	{
 		if (**tmp == '0')
 			zero_flag = 1;
 		while (**tmp >= '0' && **tmp <= '9')
-		{   
+		{
 			pad *= 10;
 			pad += **tmp - '0';
 			(*tmp)++;
 		}
-		if (**tmp != 'd' && **tmp != 's') 
+		if (**tmp != 'd' && **tmp != 's')
 		{
 			ft_putstr(ft_itoa(pad));
 			zero_flag = 0;
 		}
 	}
 	if (**tmp == 's')
-	{ 
+	{
 		str = va_arg(argptr, char *);
 		pad = do_padding(str, pad, zero_flag);
 		ft_putstr(str);
@@ -82,24 +100,27 @@ void		flag_selector(char **tmp, va_list argptr)
 
 int     ft_printf(const char *format, ...)
 {
-    char    *tmp;
+    char    *str;
     va_list argptr;
+		t_args	*b;
 
-    va_start(argptr, format);
-    tmp = (char *)format;
-    while (*tmp)
+		b = (t_args *)malloc(sizeof(t_args));
+    a_start(argptr, format);
+    str = (char *)format;
+    while (*str)
     {
-        while (*tmp != '%' && *tmp != '\0')
+        while (*str != '%' && *str != '\0')
         {
-            ft_putchar(*tmp);
-            tmp++;
+            ft_putchar(*str);
+            str++;
         }
-        if (*tmp == '\0')
+        if (*str == '\0')
             return (0);
-        tmp++;
-    	flag_selector(&tmp, argptr);
+        str++;
+    	flag_selector(&str, argptr);
 	}
 	va_end(argptr);
+	free(b);
 	return (0);
 }
 /*
