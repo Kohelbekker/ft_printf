@@ -4,10 +4,9 @@
 #include <stdlib.h>
 #include "libft/libft.h"
 
-void		init_struct(t_args *b)
+void		clear_struct(t_args *b)
 {
 	b->type = NULL;
-	b->i = 0;
 	b->zero_x = 0;
 	b->zero = 0;
 	b->minus = 0;
@@ -53,7 +52,7 @@ int     do_padding(char *str, int pad, int zero_flag)
     return (0);
 }
 
-void		flag_selector(char **tmp, va_list argptr)
+void		parse_arg(va_list argptr, t_args *b, char *str)
 {
     int     zero_flag;
     int     pad;
@@ -98,27 +97,93 @@ void		flag_selector(char **tmp, va_list argptr)
 		ft_putchar('%');
 }
 
+void	precision_search(t_args *b, char *str)
+{
+	b->i++;
+	while(str[b->i] && ft_isdigit(str[b->i]))
+	{
+		b->prec *= 10;
+		b->prec += str[b->i++] -'0';
+	}
+
+}
+
+void	width_search(t_args *b, char *str)
+{
+	while (str[b->i] && ft_isdigit(str[b->i]))
+	{
+		b->width *= 10;
+		b->width += str[b->i++] - '0';
+	}
+}
+
+void	sign_search(t_args *b, char *str)
+{
+	int i;
+
+	i = b->i;
+	while (str[i] == '+' || str[i] == '-' || str[i] == '0' ||
+		str[i] == '#' || str[i] = ' ')
+	{
+		if (str[i] == '+')
+			b->plus = 1;
+		if (str[i] == '-')
+			b->minus = 1;
+		if (str[i] == '#')
+			b->zero_x = 1;
+		if (str[i] == ' ')
+			b->space = 1;
+		if (str[i] == '0')
+			b->zero = 1;
+		i++;
+	}
+	b->i = i;
+}
+
+void	find_flag(va_list argptr, t_args *b, char *str)
+{
+	sign_search(b, str);
+	width_search(b, str);
+	if (str[b->i] == '.')
+		precision_search(b, str);
+	flag_search(argptr, b, str);
+}
+
+void	main_loop(va_list argptr, t_args *b, char *str)
+{
+	int		start;
+	int		end;
+
+	while (str[b->i])
+    {
+        while (str[b->i] != '%' && str[b->i] != '\0')
+        {
+            ft_putchar(str[b->i]);
+            b->i++;
+            start++;
+        }
+        end = start;
+        if (str[b->i] == '%')
+        {
+        	find_flag(argptr, b, str);
+        	clear_struct(b);
+        }
+	}
+}
+
 int     ft_printf(const char *format, ...)
 {
     char    *str;
     va_list argptr;
-		t_args	*b;
+	t_args	*b;
 
-		b = (t_args *)malloc(sizeof(t_args));
-    a_start(argptr, format);
+	b = (t_args *)malloc(sizeof(t_args));
+	clear_struct(b);
+	b->i = 0;
+	b->start = 0;
+    va_start(argptr, format);
     str = (char *)format;
-    while (*str)
-    {
-        while (*str != '%' && *str != '\0')
-        {
-            ft_putchar(*str);
-            str++;
-        }
-        if (*str == '\0')
-            return (0);
-        str++;
-    	flag_selector(&str, argptr);
-	}
+    main_loop(argptr, b, str);
 	va_end(argptr);
 	free(b);
 	return (0);

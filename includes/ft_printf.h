@@ -7,20 +7,22 @@
 
 typedef struct	s_args
 {
-  char  *type;
-	int   i;
-	int   zero_x;
-	int   zero;
-	int   minus;
-	int   plus;
-	int   prec;
-	int   width;
-	int   space;
-	int   hh;
-	int   h;
-	int   ll;
-	int   l;
-	int   l_cap;
+	char	*type;
+	int		start;
+	int		end;
+	int		i;
+	int		zero_x;
+	int		zero;
+	int		minus;
+	int		plus;
+	int		prec;
+	int		width;
+	int		space;
+	int		hh;
+	int		h;
+	int		ll;
+	int		l;
+	int		l_cap;
 }				t_args ;
 
 #endif
