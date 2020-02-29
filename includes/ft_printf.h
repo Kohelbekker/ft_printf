@@ -7,9 +7,9 @@
 
 typedef struct	s_args
 {
-	char	*type;
+	char	*buf;
+	char	type;
 	int		start;
-	int		end;
 	int		i;
 	int		zero_x;
 	int		zero;
@@ -23,6 +23,6 @@ typedef struct	s_args
 	int		ll;
 	int		l;
 	int		l_cap;
-}				t_args ;
+}				t_args;
 
 #endif

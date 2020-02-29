@@ -43,7 +43,6 @@ int main () {
 	printf("\n-----------------------------------\n");
 	//////////////////////////////////////////////////////
 
-	printf("%didfd\n", 1234);
 	//////////// FLAGS ////////////////
 	//	- Left-justify within the given field width; Right justification is the default (see width sub-specifier).
 	//
