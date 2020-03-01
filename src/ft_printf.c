@@ -1,12 +1,9 @@
-#include <stdarg.h>
+#include "../includes/ft_printf.h"
 #include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "libft/libft.h"
 
 void		clear_struct(t_args *b)
 {
-	b->type = NULL;
+	b->flag = 0;
 	b->zero_x = 0;
 	b->zero = 0;
 	b->minus = 0;
@@ -35,6 +32,31 @@ int     check_length(int i)
     return (length);
 }
 
+void	add_to_buffer(t_args *b, char *str, int start, int end)
+{
+	char	*tmp;
+	int		i;
+
+	i = b->buf ? ft_strlen(b->buf) : 0;
+	if (!b->buf)
+		b->buf = (char *)malloc(sizeof(char) * (end + 1));
+	else
+	{
+		free(b->buf);
+		tmp = ft_strdup(b->buf);
+		b->buf = (char *)malloc(ft_strlen(tmp) + (end - start) + 1);
+		ft_strcpy(b->buf, tmp);
+		free(tmp);
+	}
+	while (start < end)
+	{
+		b->buf[i] = str[start];
+		i++;
+		start++;
+	}
+	b->buf[i] = '\0';
+}
+
 void	precision_search(t_args *b, char *str)
 {
 	b->i++;
@@ -55,15 +77,15 @@ void	width_search(t_args *b, char *str)
 	}
 }
 
-void	size_search(va_list *argptr, t_args *b, char *str)
+void	size_search(t_args *b, char *str)
 {
-	if (str[b->i] == 'l')
+	if (str[b->i] == 'l' && str[b->i + 1] != 'l')
 		b->l = 1;
-	else if (str[b->i] == 'll')
+	else if (str[b->i] == 'l' && str[b->i + 1] == 'l')
 		b->ll = 1;
-	else if (str[b->i] == 'h')
-		b->h;
-	else if (str[b->i] == 'hh')
+	else if (str[b->i] == 'h' && str[b->i + 1] != 'h')
+		b->h = 1;
+	else if (str[b->i] == 'h' && str[b->i + 1] == 'h')
 		b->hh = 1;
 	else if (str[b->i] == 'L')
 		b->l_cap = 1;
@@ -75,7 +97,7 @@ void	sign_search(t_args *b, char *str)
 
 	i = b->i;
 	while (str[i] == '+' || str[i] == '-' || str[i] == '0' ||
-		str[i] == '#' || str[i] = ' ')
+		str[i] == '#' || str[i] == ' ')
 	{
 		if (str[i] == '+')
 			b->plus = 1;
@@ -92,6 +114,69 @@ void	sign_search(t_args *b, char *str)
 	b->i = i;
 }
 
+void	flag_sign(t_args *b, char *str)
+{
+	char	*tmp;
+	int		i;
+	char	c;
+
+	i = 0;
+	c = (b->zero) ? '0' : ' ';
+	if (b->width)
+	{
+		printf("%d %c\n", b->width, c);
+		tmp = (char *)malloc(b->width + 1);
+		tmp[b->width] = '\0';
+		while (tmp[i])
+			tmp[i++] = c;
+		i = b->minus ? 0 : (b->width - 1);
+		printf("i = %d\n", i);
+		tmp[i] = '%';
+		printf("s = %s\n", tmp);
+	}
+	else
+	{
+		tmp = (char *)malloc(2);
+		tmp[0] = '%';
+		tmp[1] = '\0';
+	}
+	add_to_buffer(b, tmp, 0, ft_strlen(tmp));
+}
+
+void	simple_flags(va_list argptr, t_args *b, char *str)
+{
+
+}
+
+void	base_flags(va_list argptr, t_args *b, char *str)
+{
+	
+}
+
+void	number_flags(va_list argptr, t_args *b, char *str)
+{
+	
+}
+
+void	flag_search(va_list argptr, t_args *b, char *str)
+{
+	b->flag = str[b->i];
+
+	if (b->flag == 'c' || b->flag == 's' || b->flag == 'p' ||
+		b->flag == 'f')
+		simple_flags(argptr, b, str);
+	else if (b->flag == 'u' || b->flag == 'o' || b->flag == 'x' ||
+		b->flag == 'X')
+		base_flags(argptr, b, str);
+	else if (b->flag == 'd' || b->flag == 'i')
+		number_flags(argptr, b, str);
+	else if (b->flag == '%')
+		flag_sign(b, str);
+	else
+		add_to_buffer(b,  str, b->start, b->i);
+	b->i++;
+}
+
 void	find_flag(va_list argptr, t_args *b, char *str)
 {
 	sign_search(b, str);
@@ -100,30 +185,6 @@ void	find_flag(va_list argptr, t_args *b, char *str)
 		precision_search(b, str);
 	size_search(b, str);
 	flag_search(argptr, b, str);
-}
-
-void	add_buffer(t_args *b, char *str, int start, int end)
-{
-	char	*tmp;
-	int		i;
-
-	i = b->buf ? ft_strlen(b->buf) : 0;
-	if (!b->buf)
-		b->buf = (char *)malloc(sizeof(char) * (end + 1))
-	else
-	{
-		tmp = ft_strdup(b->buf);
-		free(b->buf);
-		b->buf = (char *)malloc(ft_strlen(tmp) + (end - start) + 1);
-		ft_strcpy(b->buf, tmp);
-	}
-	while (start < end)
-	{
-		b->buf[i] = str[start]
-		i++;
-		start;
-	}
-	free(tmp);
 }
 
 void	main_loop(va_list argptr, t_args *b, char *str)
@@ -155,20 +216,20 @@ int     ft_printf(const char *format, ...)
 	clear_struct(b);
 	b->i = 0;
 	b->start = 0;
-	b->buf = NULL;
+	b->buf = 0;
     va_start(argptr, format);
     str = (char *)format;
     main_loop(argptr, b, str);
 	va_end(argptr);
 	free(b);
+	printf("%s\n", b->buf);
 	return (0);
 }
-/*
+
 int	main () {
 	char *str;
 
-	str = "lol\nkek\nwow, number: %d\n%sofix\n";
-	ft_printf(str, 12345, "yo-hoh-oh");
+	ft_printf("'lol %08% kek'");
 	return (0);
 }
-*/
+

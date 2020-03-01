@@ -1,6 +1,6 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-#include "libft/libft.h"
+#include "../libft/libft.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdarg.h>
@@ -8,7 +8,7 @@
 typedef struct	s_args
 {
 	char	*buf;
-	char	type;
+	char	flag;
 	int		start;
 	int		i;
 	int		zero_x;
