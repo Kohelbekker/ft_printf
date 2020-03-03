@@ -20,30 +20,32 @@ void		clear_struct(t_args *b)
 
 int     check_length(int i)
 {
-    int length;
+	int length;
 
-    length = 0;
-    while (i > 9)
-    {
-        i /= 10;
-        length++;
-    }
-    length++;
-    return (length);
+	length = 0;
+	while (i > 9)
+	{
+		i /= 10;
+		length++;
+	}
+	length++;
+	return (length);
 }
 
 void	add_to_buffer(t_args *b, char *str, int start, int end)
 {
 	char	*tmp;
-	int		i;
+	int	i;
 
+	if (b->buf)
+		printf("buf = %s\n", b->buf);
 	i = b->buf ? ft_strlen(b->buf) : 0;
 	if (!b->buf)
 		b->buf = (char *)malloc(sizeof(char) * (end + 1));
 	else
 	{
-		free(b->buf);
 		tmp = ft_strdup(b->buf);
+		free(b->buf);
 		b->buf = (char *)malloc(ft_strlen(tmp) + (end - start) + 1);
 		ft_strcpy(b->buf, tmp);
 		free(tmp);
@@ -117,22 +119,15 @@ void	sign_search(t_args *b, char *str)
 void	flag_sign(t_args *b, char *str)
 {
 	char	*tmp;
-	int		i;
 	char	c;
 
-	i = 0;
 	c = (b->zero) ? '0' : ' ';
 	if (b->width)
 	{
-		printf("%d %c\n", b->width, c);
 		tmp = (char *)malloc(b->width + 1);
 		tmp[b->width] = '\0';
-		while (tmp[i])
-			tmp[i++] = c;
-		i = b->minus ? 0 : (b->width - 1);
-		printf("i = %d\n", i);
-		tmp[i] = '%';
-		printf("s = %s\n", tmp);
+		ft_memset(tmp, c, b->width);
+		tmp[b->minus ? 0 : (b->width - 1)] = '%';
 	}
 	else
 	{
@@ -143,9 +138,69 @@ void	flag_sign(t_args *b, char *str)
 	add_to_buffer(b, tmp, 0, ft_strlen(tmp));
 }
 
-void	simple_flags(va_list argptr, t_args *b, char *str)
+char	*write_after_padding(t_args *b, char c, char *str, char *tmp)
+{
+	int	k;
+	int	i;
+	int		len;
+
+	len = b->flag == 'c' ? 1 : ft_strlen((char *)str);
+	k = 0;
+	i = b->width - len;
+	if (b->flag == 'c')
+		tmp[i] = c;
+	else
+	{
+		while (tmp[i])
+		{
+			tmp[i] = str[k];
+			i++;
+			k++;
+		}
+	}
+	return (tmp);
+}
+
+void	parse_char_flag(t_args *b, char c, char *str)
+{
+	char		*tmp;
+	int		i;
+	int		len;
+
+	len = b->flag == 'c' ? 1 : ft_strlen((char *)str);
+	i = 0;
+	if (b->width > len)
+	{
+		tmp = (char *)malloc(b->width + 1);
+		tmp[b->width] = '\0';
+		ft_memset(tmp, (b->zero) ? '0' : ' ', b->width);
+		if (b->minus)
+			tmp = b->flag == 's' ? ft_memcpy(tmp, str, len) : ft_memset(tmp, c, len);
+		else
+			tmp = write_after_padding(b, c, str, tmp);
+	}
+	else
+	{
+		tmp = (char *)malloc(len + 1);
+		tmp = b->flag == 's' ? ft_memcpy(tmp, str, len) : ft_memset(tmp, c, len);
+		tmp[len] = '\0';
+	}
+	add_to_buffer(b, tmp, 0, ft_strlen(tmp));
+}
+
+void	parse_pointer_flag()
 {
 
+}
+
+void	simple_flags(va_list p, t_args *b, char *str)
+{
+	if (b->flag == 'c')
+		parse_char_flag(b, va_arg(p, int), NULL);
+	else if (b->flag == 's')
+		parse_char_flag(b, 0, va_arg(p, char*)); // try to delete (void *)
+	else if (b->flag == 'p')
+		parse_pointer_flag(b, va_arg(p, void*));
 }
 
 void	base_flags(va_list argptr, t_args *b, char *str)
@@ -158,13 +213,19 @@ void	number_flags(va_list argptr, t_args *b, char *str)
 	
 }
 
+void	float_flags()
+{
+
+}
+
 void	flag_search(va_list argptr, t_args *b, char *str)
 {
 	b->flag = str[b->i];
 
-	if (b->flag == 'c' || b->flag == 's' || b->flag == 'p' ||
-		b->flag == 'f')
+	if (b->flag == 'c' || b->flag == 's' || b->flag == 'p')
 		simple_flags(argptr, b, str);
+	else if (b->flag == 'f')
+		float_flags(argptr, b, str);
 	else if (b->flag == 'u' || b->flag == 'o' || b->flag == 'x' ||
 		b->flag == 'X')
 		base_flags(argptr, b, str);
@@ -192,44 +253,52 @@ void	main_loop(va_list argptr, t_args *b, char *str)
 	int		start;
 
 	while (str[b->i])
-    {
-        b->start = b->i;
-        while (str[b->i] != '%' && str[b->i] != '\0')
-            b->i++;
-        add_to_buffer(b, str, b->start, b->i);
-        if (str[b->i] == '%')
-        {
-        	b->start = b->i++;
-        	find_flag(argptr, b, str);
-        	clear_struct(b);
-        }
+	{
+		b->start = b->i;
+		while (str[b->i] != '%' && str[b->i] != '\0')
+		{
+			printf("%c\n", str[b->i]);
+			b->i++;
+		}
+		add_to_buffer(b, str, b->start, b->i);
+		printf("done\n");
+		if (str[b->i] == '%')
+		{
+			b->start = b->i++;
+			find_flag(argptr, b, str);
+			clear_struct(b);
+		}
 	}
 }
 
 int     ft_printf(const char *format, ...)
 {
-    char    *str;
-    va_list argptr;
+	char		*str;
+	va_list	argptr;
 	t_args	*b;
+	int		len;
 
 	b = (t_args *)malloc(sizeof(t_args));
 	clear_struct(b);
 	b->i = 0;
 	b->start = 0;
 	b->buf = 0;
-    va_start(argptr, format);
-    str = (char *)format;
-    main_loop(argptr, b, str);
+	va_start(argptr, format);
+	str = (char *)format;
+	main_loop(argptr, b, str);
 	va_end(argptr);
+	len = ft_strlen(b->buf);
+	ft_putstr(b->buf);
 	free(b);
-	printf("%s\n", b->buf);
-	return (0);
+	return (len);
 }
 
 int	main () {
 	char *str;
+	int		a;
 
-	ft_printf("'lol %08% kek'");
+	a = ft_printf("'lol %s kek'\n", "sho ty dyadya?");
+	printf("return = %d\n", a);
 	return (0);
 }
 

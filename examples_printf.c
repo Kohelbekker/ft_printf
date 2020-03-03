@@ -1,4 +1,4 @@
-#include <libc.h>
+#include <stdio.h>
 
 int main () {
 
