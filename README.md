@@ -48,13 +48,22 @@ Used with a, A, e, E, f, F, g or G it forces the written output to contain a dec
     <td><b>p</b></td>
   </tr>
   <tr>
-    <td>hh</td>
+    <td>none</td>
     <td>int</td>
     <td>unsigned int</td>
     <td>double</td>
     <td>int</td>
     <td>char*</td>
     <td>void*</td>
+  <tr>
+  <tr>
+    <td>hh</td>
+    <td>signed char</td>
+    <td>unsigned char</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   <tr>
     <td>h</td>
     <td>short int</td>
