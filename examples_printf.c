@@ -28,7 +28,11 @@ int main () {
 	printf("%%.06d:  '%.06d'\n", 123);
 	printf("%%8.10d: '%8.10d'\n", 12345);
 	printf("%04%\n");
-	printf("%+-s", "kek-lol");
+	printf("%%.30s: '%.30s'\n", "lolkekazaza");
+	printf("%%8.20s: '%8.20s'\n", "lolkekazaza");
+	printf("%%20.8s: '%20.8s'\n", "lolkekazaza");
+	printf("%%5.3s: '%5.3s'\n", "lolkekazaza");
+	printf("%%8.10d: '%8.10d'\n", 12345);
 	//////////////////////////
 
 

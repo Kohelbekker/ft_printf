@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-static size_t	ft_intlen(int n)
+static size_t		ft_intlen(int n)
 {
-	size_t k;
+	size_t 				k;
 
 	k = 1;
 	while ((n = n / 10))
@@ -22,11 +22,11 @@ static size_t	ft_intlen(int n)
 	return (k);
 }
 
-char			*ft_itoa(int n)
+char						*ft_itoa(long long int n)
 {
-	char			*str;
-	unsigned int	k;
-	size_t			len;
+	char					*str;
+	long long int	k;
+	size_t				len;
 
 	k = n;
 	len = ft_intlen(n);
