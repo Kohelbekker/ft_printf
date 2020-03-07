@@ -19,15 +19,10 @@ char					*ft_new_itoa(t_args *b, long long int n)
 
 	i = 0;
 	k = n;
-	len = b->space ? ft_intlen(n) + 1 : ft_intlen(n);
-	len += b->plus ? 1 : 0;
+	len ==ft_intlen(n);
 	len += (b->prec > ft_intlen(n)) ? b->prec - ft_intlen(n) : 0;
-	len += b->width > len ? b->width - len : 0;
-	if (n < 0 && b->plus == 0)
-	{
-		len++;
+	if (n < 0)
 		k = -1 * n;
-	}
 	str = ft_strnew(len);
 	str[--len] = k % 10 + 48;
 	while ((k = k / 10))
@@ -43,6 +38,13 @@ char					*ft_new_itoa(t_args *b, long long int n)
 	return (str);
 }
 
+	if (n < 0)
+		str[i++] = '-';
+	else if (b->plus && n > 0)
+		str[i++] = '+';
+	else if (b->space)
+		str[i++] = ' ';
+
 void		parse_digit_flag(t_args *b, long long int a)
 {
 	char	*num;
@@ -53,19 +55,24 @@ void		parse_digit_flag(t_args *b, long long int a)
 	i = 0;
 	num = ft_new_itoa(b, a);
 	len = ft_strlen(num);
-	
 	if (b->width > len)
 	{
 		tmp = (char *)malloc(b->width + 1);
 		tmp[b->width] = '\0';
 		ft_memset(tmp, (b->zero) ? '0' : ' ', b->width);
+		if (b->zero || b->minus)
+		{
+
+		}
 		if (b->minus)
 			ft_memcpy(tmp, num, len);
 		else
 			tmp = write_after_padding(b, 0, num, tmp);
 	}
 	else
+	{
 		tmp = ft_strdup(num);
+	}
 	add_to_buffer(b, tmp, 0, ft_strlen(tmp));
 	free(tmp);
 	free(num);
