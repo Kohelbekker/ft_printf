@@ -1,6 +1,6 @@
 #include "../includes/ft_printf.h"
 
-int     check_length(int i)
+int		check_length(int i)
 {
 	int length;
 

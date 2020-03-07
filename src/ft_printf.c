@@ -8,7 +8,7 @@ void		clear_struct(t_args *b)
 	b->zero = 0;
 	b->minus = 0;
 	b->plus = 0;
-	b->prec = 0;
+	b->prec = -1;
 	b->width = 0;
 	b->space = 0;
 	b->hh = 0;
@@ -88,5 +88,62 @@ int	main () {
 	char *str;
 	int		a;
 
+	printf("\n-----------------------------------\n");
+	printf("%%+d:  '%+d'\n", 123);
+	printf("%%+d:  '%+d'\n", -123);
+	printf("%%6d:  '%6d'\n", 123);
+	printf("%%-6d:  '%-6d'\n", 123);
+	printf("%%-6d:  '%-6d'\n", -123);
+	printf("%%06d:  '%06d'\n", 123);
+	printf("%%06d:  '%06d'\n", -123);
+	printf("%%+05d:  '%+05d'\n", 10);
+	printf("%%0+5d:  '%0+5d'\n", 10);
+	printf("%%-+5d: '%-+5d'\n", 10); // flag 0 is ignored when -(minus) is present
+	printf("%%08.2f: '%08.2f'\n", 10.3456);	//Eight-wide, two positions after the decimal, zero-filled
+	printf("%% d:     '% d'\n", 1234);
+	printf("%% d:     '% d'\n", -1234);
+	printf("%% +d:    '%+d'\n", 1234);
+	printf("%%    d:     '%    d'\n", 1234);
+	printf("%%    d:     '%    d'\n", -1234);
+	printf("%%.1d:  '%.1d'\n", 123);
+	printf("%%.6d:  '%.6d'\n", -123);
+	printf("%%.6d:  '%.6d'//12345678\n", 12345678);
+	printf("%%.06d:  '%.06d'\n", 123);
+	printf("%%.6d:  '%.6d'\n", 123);
+	printf("%%8.10d: '%8.10d'\n", 12345);
+	printf("%%.30s: '%.30s'\n", "lolkekazaza");
+	printf("%%8.20s: '%8.20s'\n", "lolkekazaza");
+	printf("%%20.8s: '%20.8s'\n", "lolkekazaza");
+	printf("%%5.s: '%5.s'\n", "lolkekazaza");
+	printf("%%8.10d: '%8.10d'\n", 12345);
+
+	ft_printf("\n-----------------------------------\n");
+	ft_printf("%%+d:  '%+d'\n", 123);
+	ft_printf("%%+d:  '%+d'\n", -123);
+	ft_printf("%%6d:  '%6d'\n", 123);
+	ft_printf("%%-6d:  '%-6d'\n", 123);
+	ft_printf("%%-6d:  '%-6d'\n", -123);
+	ft_printf("%%06d:  '%06d'\n", 123);
+	ft_printf("%%06d:  '%06d'\n", -123);
+	ft_printf("%%+05d:  '%+05d'\n", 10);
+	ft_printf("%%0+5d:  '%0+5d'\n", 10);
+	ft_printf("%%-+5d: '%-+5d'\n", 10); // flag 0 is ignored when -(minus) is present
+	ft_printf("%%08.2f: '%08.2f'\n", 10.3456);	//Eight-wide, two positions after the decimal, zero-filled
+	ft_printf("%% d:     '% d'\n", 1234);
+	ft_printf("%% d:     '% d'\n", -1234);
+	ft_printf("%% +d:    '%+d'\n", 1234);
+	ft_printf("%%    d:     '%    d'\n", 1234);
+	ft_printf("%%    d:     '%    d'\n", -1234);
+	ft_printf("%%.1d:  '%.1d'\n", 123);
+	ft_printf("%%.6d:  '%.6d'\n", -123);
+	ft_printf("%%.6d:  '%.6d'//12345678\n", 12345678);
+	ft_printf("%%.06d:  '%.06d'\n", 123);
+	ft_printf("%%.6d:  '%.6d'\n", 123);
+	ft_printf("%%8.10d: '%8.10d'\n", 12345);
+	ft_printf("%%.30s: '%.30s'\n", "lolkekazaza");
+	ft_printf("%%8.20s: '%8.20s'\n", "lolkekazaza");
+	ft_printf("%%20.8s: '%20.8s'\n", "lolkekazaza");
+	ft_printf("%%5.s: '%5.s'\n", "lolkekazaza");
+	ft_printf("%%8.10d: '%8.10d'\n", 12345);
 	return (0);
 }

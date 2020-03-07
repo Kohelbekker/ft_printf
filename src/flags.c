@@ -33,14 +33,20 @@ void	sign_search(t_args *b, char *str)
 		str[i] == '#' || str[i] == ' ')
 	{
 		if (str[i] == '+')
+		{
+			b->space = 0;
 			b->plus = 1;
+		}
 		if (str[i] == '-')
+		{
+			b->zero = 0;
 			b->minus = 1;
+		}
 		if (str[i] == '#')
 			b->zero_x = 1;
-		if (str[i] == ' ')
+		if (str[i] == ' ' && b->plus == 0)
 			b->space = 1;
-		if (str[i] == '0')
+		if (str[i] == '0' && b->minus == 0)
 			b->zero = 1;
 		i++;
 	}
@@ -70,8 +76,12 @@ void	flag_search(va_list p, t_args *b, char *str)
 void	find_flag(va_list argptr, t_args *b, char *str)
 {
 	sign_search(b, str);
+	width_search(b, str);
 	if (str[b->i] == '.')
+	{
+		b->prec = 0;
 		precision_search(b, str);
+	}
 	size_search(b, str);
 	flag_search(argptr, b, str);
 }

@@ -22,7 +22,7 @@ static size_t		ft_intlen(int n)
 	return (k);
 }
 
-char						*ft_itoa(long long int n)
+char						*ft_itoa(int n)
 {
 	char					*str;
 	long long int	k;

@@ -11,7 +11,7 @@ int main () {
 	printf("%%6d:  '%6d'\n", 123);
 	printf("%%-6d:  '%-6d'\n", 123);
 	printf("%%-6d:  '%-6d'\n", -123);
-	printf("%%06d:  '%06d'\n", 123);
+	printf("%%-06d:  '%-06d'\n", 123);
 	printf("%%06d:  '%06d'\n", -123);
 	printf("%%+05d:  '%+05d'\n", 10);
 	printf("%%0+5d:  '%0+5d'\n", 10);
@@ -22,16 +22,17 @@ int main () {
 	printf("%% +d:    '%+d'\n", 1234);
 	printf("%%    d:     '%    d'\n", 1234);
 	printf("%%    d:     '%    d'\n", -1234);
-	printf("%%.6d:  '%.6d'\n", 123);
+	printf("%%.1d:  '%.1d'\n", 123);
 	printf("%%.6d:  '%.6d'\n", -123);
 	printf("%%.6d:  '%.6d'//12345678\n", 12345678);
 	printf("%%.06d:  '%.06d'\n", 123);
+	printf("%%.6d:  '%.6d'\n", 123);
 	printf("%%8.10d: '%8.10d'\n", 12345);
-	printf("%04%\n");
+	printf("%% 12.8d: '% 12.8d'\n", 12345);
 	printf("%%.30s: '%.30s'\n", "lolkekazaza");
 	printf("%%8.20s: '%8.20s'\n", "lolkekazaza");
 	printf("%%20.8s: '%20.8s'\n", "lolkekazaza");
-	printf("%%5.3s: '%5.3s'\n", "lolkekazaza");
+	printf("%%5.s: '%5.s'\n", "lolkekazaza");
 	printf("%%8.10d: '%8.10d'\n", 12345);
 	//////////////////////////
 
