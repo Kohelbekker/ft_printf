@@ -16,6 +16,7 @@ void		clear_struct(t_args *b)
 	b->ll = 0;
 	b->l = 0;
 	b->l_cap = 0;
+	b->prefix_exist = 0;
 }
 
 void	add_to_buffer(t_args *b, char *str, int start, int end)
@@ -87,63 +88,75 @@ int     ft_printf(const char *format, ...)
 int	main () {
 	char *str;
 	int		a;
+	int		p;
 
-	printf("\n-----------------------------------\n");
-	printf("%%+d:  '%+d'\n", 123);
-	printf("%%+d:  '%+d'\n", -123);
-	printf("%%6d:  '%6d'\n", 123);
-	printf("%%-6d:  '%-6d'\n", 123);
-	printf("%%-6d:  '%-6d'\n", -123);
-	printf("%%06d:  '%06d'\n", 123);
-	printf("%%06d:  '%06d'\n", -123);
-	printf("%%+05d:  '%+05d'\n", 10);
-	printf("%%0+5d:  '%0+5d'\n", 10);
-	printf("%%-+5d: '%-+5d'\n", 10); // flag 0 is ignored when -(minus) is present
-	printf("%%08.2f: '%08.2f'\n", 10.3456);	//Eight-wide, two positions after the decimal, zero-filled
-	printf("%% d:     '% d'\n", 1234);
-	printf("%% d:     '% d'\n", -1234);
-	printf("%% +d:    '%+d'\n", 1234);
-	printf("%%    d:     '%    d'\n", 1234);
-	printf("%%    d:     '%    d'\n", -1234);
-	printf("%%.1d:  '%.1d'\n", 123);
-	printf("%%.6d:  '%.6d'\n", -123);
-	printf("%%.6d:  '%.6d'//12345678\n", 12345678);
-	printf("%%.06d:  '%.06d'\n", 123);
-	printf("%%.6d:  '%.6d'\n", 123);
-	printf("%%8.10d: '%8.10d'\n", 12345);
-	printf("%%.30s: '%.30s'\n", "lolkekazaza");
-	printf("%%8.20s: '%8.20s'\n", "lolkekazaza");
-	printf("%%20.8s: '%20.8s'\n", "lolkekazaza");
-	printf("%%5.s: '%5.s'\n", "lolkekazaza");
-	printf("%%8.10d: '%8.10d'\n", 12345);
+	p = 12;
+	// printf("\n-----------------------------------\n");
+	// printf("%%    d:     '%    d'\n", 1234);
+	// printf("%%    d:     '%    d'\n", -1234);
+	// printf("%% d:     '% d'\n", 1234);
+	// printf("%% d:     '% d'\n", -1234);
+	// printf("%% +d:    '%+d'\n", 1234);
+	// printf("%%+d:  '%+d'\n", 123);
+	// printf("%%+d:  '%+d'\n", -123);
+	// printf("%%6d:  '%6d'\n", 123);
+	// printf("%%-6d:  '%-6d'\n", 123);
+	// printf("%%-6d:  '%-6d'\n", -123);
+	// printf("%%06d:  '%06d'\n", 123);
+	// printf("%%06d:  '%06d'\n", -123);
+	// printf("%%+05d:  '%+05d'\n", 10);
+	// printf("%%0+5d:  '%0+5d'\n", 10);
+	// printf("%%-+5d: '%-+5d'\n", 10); // flag 0 is ignored when -(minus) is present
+	// printf("%%.1d:  '%.1d'\n", 123);
+	// printf("%%.6d:  '%.6d'\n", -123);
+	// printf("%%.6d:  '%.6d'//12345678\n", 12345678);
+	// printf("%%.06d:  '%.06d'\n", 123);
+	// printf("%%.6d:  '%.6d'\n", 123);
+	// printf("%%8.10d: '%8.10d'\n", 12345);
+	// printf("%%8.10d: '%8.10d'\n", 12345);
 
+	// ft_printf("\n-----------------------------------\n");
+	// ft_printf("%%    d:     '%    d'\n", 1234);
+	// ft_printf("%%    d:     '%    d'\n", -1234);
+	// ft_printf("%% d:     '% d'\n", 1234);
+	// ft_printf("%% d:     '% d'\n", -1234);
+	// ft_printf("%% +d:    '%+d'\n", 1234);
+	// ft_printf("%%+d:  '%+d'\n", 123);
+	// ft_printf("%%+d:  '%+d'\n", -123);
+	// ft_printf("%%6d:  '%6d'\n", 123);
+	// ft_printf("%%-6d:  '%-6d'\n", 123);
+	// ft_printf("%%-6d:  '%-6d'\n", -123);
+	// ft_printf("%%06d:  '%06d'\n", 123);
+	// ft_printf("%%06d:  '%06d'\n", -123);
+	// ft_printf("%%+05d:  '%+05d'\n", 10);
+	// ft_printf("%%0+5d:  '%0+5d'\n", 10);
+	// ft_printf("%%-+5d: '%-+5d'\n", 10); // flag 0 is ignored when -(minus) is present
+	// ft_printf("%%.1d:  '%.1d'\n", 123);
+	// ft_printf("%%.6d:  '%.6d'\n", -123);
+	// ft_printf("%%.6d:  '%.6d'//12345678\n", 12345678);
+	// ft_printf("%%.06d:  '%.06d'\n", 123);
+	// ft_printf("%%.6d:  '%.6d'\n", 123);
+	// ft_printf("%%8.10d: '%8.10d'\n", 12345);
+	// ft_printf("%%8.10d: '%8.10d'\n", 12345);
+	// ft_printf("x = %x//1234  \nX = %X//1234  \no = %o//1234  \nu = %u//1234\n", 1234, 1234, 1234, 1234);
 	ft_printf("\n-----------------------------------\n");
-	ft_printf("%%+d:  '%+d'\n", 123);
-	ft_printf("%%+d:  '%+d'\n", -123);
-	ft_printf("%%6d:  '%6d'\n", 123);
-	ft_printf("%%-6d:  '%-6d'\n", 123);
-	ft_printf("%%-6d:  '%-6d'\n", -123);
-	ft_printf("%%06d:  '%06d'\n", 123);
-	ft_printf("%%06d:  '%06d'\n", -123);
-	ft_printf("%%+05d:  '%+05d'\n", 10);
-	ft_printf("%%0+5d:  '%0+5d'\n", 10);
-	ft_printf("%%-+5d: '%-+5d'\n", 10); // flag 0 is ignored when -(minus) is present
-	ft_printf("%%08.2f: '%08.2f'\n", 10.3456);	//Eight-wide, two positions after the decimal, zero-filled
-	ft_printf("%% d:     '% d'\n", 1234);
-	ft_printf("%% d:     '% d'\n", -1234);
-	ft_printf("%% +d:    '%+d'\n", 1234);
-	ft_printf("%%    d:     '%    d'\n", 1234);
-	ft_printf("%%    d:     '%    d'\n", -1234);
-	ft_printf("%%.1d:  '%.1d'\n", 123);
-	ft_printf("%%.6d:  '%.6d'\n", -123);
-	ft_printf("%%.6d:  '%.6d'//12345678\n", 12345678);
-	ft_printf("%%.06d:  '%.06d'\n", 123);
-	ft_printf("%%.6d:  '%.6d'\n", 123);
-	ft_printf("%%8.10d: '%8.10d'\n", 12345);
-	ft_printf("%%.30s: '%.30s'\n", "lolkekazaza");
-	ft_printf("%%8.20s: '%8.20s'\n", "lolkekazaza");
-	ft_printf("%%20.8s: '%20.8s'\n", "lolkekazaza");
-	ft_printf("%%5.s: '%5.s'\n", "lolkekazaza");
-	ft_printf("%%8.10d: '%8.10d'\n", 12345);
+
+	// printf("%%x = %x//1234  \n%%X = %X//1234  \n%%o = %o//1234  \n%%u = %u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// ft_printf("FT: %%x = %x//1234  \nX = %X//1234  \no = %o//1234  \nu = %u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// printf("%%010x = %010x//1234  \n%%010X = %010X//1234  \n%%010o = %010o//1234  \n%%010u = %010u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// ft_printf("FT: %%010x = %010x//1234  \n%%010X= %010X//1234  \n%%010o = %010o//1234  \n%%010u = %010u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	printf("%%010.8x = '%010.8x'//1234  \n%%010.8X = '%010.8X'//1234  \n%%010.8o = '%010.8o'//1234  \n%%010.8u = '%010.8u'//1234\n\n\n", 1234, 1234, 1234, 1234);
+	ft_printf("FT: %%010.8x = '%010.8x'//1234  \n%%010.8X = '%010.8X'//1234  \n%%010.8o = '%010.8o'//1234  \n%%010.8u = '%010.8u'//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// printf("%%010.14x = %010.14x//1234  \n%%010.14X = %010.14X//1234  \n%%010.14o = %010.14o//1234  \n%%010.14u = %010.14u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// ft_printf("FT: %%010.14x = %010.14x//1234  \n%%010.14X = %010.14X//1234  \n%%010.14o = %010.14o//1234  \n%%010.14u = %010.14u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// printf("%%#010.14x = %#010.14x//1234  \n%%#010.14X= %#010.14X//1234  \n%%#010.14o = %#010.14o//1234  \n%%#010.14u = %#010.14u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// ft_printf("FT: %%#010.14x = %#010.14x//1234  \n%%#010.14X = %#010.14X//1234  \n%%#010.14o = %#010.14o//1234  \n%%#010.14u = %#010.14u//1234\n\n\n", 1234, 1234, 1234, 1234);
+	// printf("\n-----------------------------------\n");
+	// printf("'#x = %#x//1234  \n#X = %#X//1234  \n#o = %#o//1234'\n", 1234, 1234, 1234);
+	// printf("%%p: %p\n", &p);
+	// ft_printf("'#x = %#x//1234  \n#X = %#X//1234  \n#o = %#o//1234'\n", 1234, 1234, 1234);
+	// ft_printf("%%p: %p\n", &p);
+	// printf("%010.8d", 1234);
+	// ft_printf("%010.8d", 1234);
 	return (0);
 }

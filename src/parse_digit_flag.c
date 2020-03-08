@@ -1,11 +1,11 @@
 #include "../includes/ft_printf.h"
 
-static int			ft_intlen(long long int n)
+int			ft_findlen(unsigned long long int n, int base)
 {
 	int 				k;
 
 	k = 1;
-	while ((n = n / 10))
+	while ((n = n / base))
 		k++;
 	return (k);
 }
@@ -14,36 +14,27 @@ char					*ft_new_itoa(t_args *b, long long int n)
 {
 	char				*str;
 	long long int		k;
-	size_t				len;
+	int					len;
 	int					i;
 
-	i = 0;
-	k = n;
-	len ==ft_intlen(n);
-	len += (b->prec > ft_intlen(n)) ? b->prec - ft_intlen(n) : 0;
-	if (n < 0)
-		k = -1 * n;
+	i = (b->width > b->prec) ? b->width - (b->prec > 0 ? b->prec : 0) - 1 : 0;
+	k = (n < 0) ? -n : n;
+	len = (b->prec > ft_findlen(k, 10)) ? b->prec : ft_findlen(k, 10);
+	len += (b->space || b->plus || n < 0) ? 1 : 0;
 	str = ft_strnew(len);
 	str[--len] = k % 10 + 48;
 	while ((k = k / 10))
 		str[--len] = (k % 10) + 48;
-	if (n < 0)
-		str[i++] = '-';
-	else if (b->plus && n > 0)
-		str[i++] = '+';
-	else if (b->space)
-		str[i++] = ' ';
 	while(str[i] && !ft_isdigit(str[i]))
 		str[i++] = '0';
+	if (n < 0)
+		str[0] = '-';
+	else if (b->plus && n > 0)
+		str[0] = '+';
+	else if (b->space)
+		str[0] = ' ';
 	return (str);
 }
-
-	if (n < 0)
-		str[i++] = '-';
-	else if (b->plus && n > 0)
-		str[i++] = '+';
-	else if (b->space)
-		str[i++] = ' ';
 
 void		parse_digit_flag(t_args *b, long long int a)
 {
@@ -51,7 +42,9 @@ void		parse_digit_flag(t_args *b, long long int a)
 	char	*tmp;
 	int		len;
 	int		i;
+	int		k;
 
+	k = 0;
 	i = 0;
 	num = ft_new_itoa(b, a);
 	len = ft_strlen(num);
@@ -59,20 +52,28 @@ void		parse_digit_flag(t_args *b, long long int a)
 	{
 		tmp = (char *)malloc(b->width + 1);
 		tmp[b->width] = '\0';
-		ft_memset(tmp, (b->zero) ? '0' : ' ', b->width);
-		if (b->zero || b->minus)
-		{
-
-		}
+		ft_memset(tmp, (b->zero && b->prec == -1) ? '0' : ' ', b->width);
 		if (b->minus)
 			ft_memcpy(tmp, num, len);
 		else
-			tmp = write_after_padding(b, 0, num, tmp);
+		{
+			i = b->width - len;
+			k = 0;
+			while (tmp[i])
+			{
+				tmp[i] = num[k];
+				i++;
+				k++;
+			}
+			if (b->zero && b->prec == -1 && !ft_isdigit(num[0]))
+			{
+				tmp[0] = num[0];
+				tmp[b->width - len] = '0';
+			}
+		}
 	}
 	else
-	{
 		tmp = ft_strdup(num);
-	}
 	add_to_buffer(b, tmp, 0, ft_strlen(tmp));
 	free(tmp);
 	free(num);

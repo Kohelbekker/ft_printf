@@ -63,7 +63,11 @@ void	flag_search(va_list p, t_args *b, char *str)
 		float_flags(p, b);
 	else if (b->flag == 'u' || b->flag == 'o' || b->flag == 'x' ||
 		b->flag == 'X' || b->flag == 'p')
+	{
+		if (b->flag == 'u')
+			b->zero_x = 0;
 		base_flags(p, b);
+	}
 	else if (b->flag == 'd' || b->flag == 'i')
 		number_flags(p, b);
 	else if (b->flag == '%')
