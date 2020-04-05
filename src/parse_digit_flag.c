@@ -82,14 +82,14 @@ void		parse_digit_flag(t_args *b, long long int a)
 void	number_flags(va_list argptr, t_args *b)
 {
 	long long int a;
-	if (b->h)
+	if (b->ll)
+		a = va_arg(argptr, long long int);
+	else if (b->l)
+		a = va_arg(argptr, long int);
+	else if (b->h)
 		a = (short)va_arg(argptr, int);
 	else if (b->hh)
 		a = (char)va_arg(argptr, int);
-	else if (b->l)
-		a = va_arg(argptr, long int);
-	else if (b->ll)
-		a = va_arg(argptr, long long int);
 	else
 		a = va_arg(argptr, int);
 	parse_digit_flag(b, a);
