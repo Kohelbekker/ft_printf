@@ -32,7 +32,7 @@
 #define TITLE(...){printf("\033[1m\n");printf(__VA_ARGS__);printf("\n\033[0m");}
 
 //Include your printf here!
-#include "ft_printf.h"
+#include "includes/ft_printf.h"
 
 //Test switchers - comment some of then to turn the tests off
 #define	CHAR		//aka chars

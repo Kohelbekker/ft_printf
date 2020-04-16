@@ -37,7 +37,8 @@ char			*write_after_padding(t_args *b, char c, char *str, char *tmp);
 int				ft_findlen(unsigned long long int n, int base);
 void			parse_char_flag(t_args *b, char c, char *str);
 void			number_flags(va_list argptr, t_args *b);
-void  			float_flags();
+void  		float_flags();
 void			base_flags();
+int    		ft_printf(const char *format, ...);
 
 #endif

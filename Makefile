@@ -1,55 +1,48 @@
-NAME =  libftprintf.a.
+NAME = libftprintf.a #Makefile піжжєний!!!
 
-SRC				= main.c\
-			      ls_lists.c \
-			      ls_sorting.c \
-			      path_lists.c \
-			      path_sorting.c \
-			      print_loop.c \
-				  print_loop2.c \
-				  flags.c \
-				  ls_loop.c \
-				  sort_type.c \
-			      dir_loop.c
+FLAGS = -Wall -Wextra -Werror
 
-SRC_P 			= ./src/
-OBJ 			= $(addprefix $(OBJ_P),$(SRC:.c=.o))
-OBJ_P			= ./obj/
-INC 			= $(addprefix -I, $(INC_P))
-INC_P			= ./includes/
-HEADER			= $(addprefix $(INC_P), ft_printf.h)
+LIBFT = libft
 
-LIB_P			= ./libft/
-ADD_LIB			= $(addprefix $(LIB_P), libft.a)
-INC_LIB			= -I./libft
-LNK_LIB			= -L./libft -lft
+DIR_S = src
 
-CC 				= gcc
-CFLAGS			= -Wall -Wextra -Werror -c
+DIR_O = obj
 
-all: obj $(ADD_LIB) $(NAME)
+HEADER = includes
 
-obj:
-	mkdir -p $(OBJ_P)
+SOURCES	= ft_printf.c \
+					flags_helpers.c \
+					flags.c \
+					parse_base_flags.c \
+					parse_char_flag.c \
+					parse_digit_flag.c \
+					parse_float_flags.c
 
-$(OBJ_P)%.o:$(SRC_P)%.c $(HEADER)
-	$(CC) $(CFLAGS) $(INC_LIB) -I $(INC_P) -o $@ -c $<
+SRCS = $(addprefix $(DIR_S)/,$(SOURCES))
 
-$(ADD_LIB):
-	make -C $(LIB_P)
+OBJS = $(addprefix $(DIR_O)/,$(SOURCES:.c=.o))
 
-$(NAME): $(OBJ)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	@make -C $(LIBFT)
+	@cp libft/libft.a ./$(NAME)
+	@ar rc $(NAME) $(OBJS)
+	@ranlib $(NAME)
+
+$(DIR_O)/%.o: $(DIR_S)/%.c $(HEADER)/ft_printf.h
+	@mkdir -p obj
+	@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
 
 clean:
-	rm -rf $(OBJ_P)
-	make -C $(LIB_P) clean
+	@rm -f $(OBJS)
+	@rm -rf $(DIR_O)
+	@make clean -C $(LIBFT)
 
 fclean: clean
-	rm -rf $(NAME)
-	make -C $(LIB_P) fclean
+	@rm -f $(NAME)
+	@make fclean -C $(LIBFT)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: fclean re norme all clean

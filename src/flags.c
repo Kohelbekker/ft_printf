@@ -22,6 +22,10 @@ void	size_search(t_args *b, char *str)
 		b->hh = 1;
 	else if (str[b->i] == 'L')
 		b->l_cap = 1;
+	if (b->l_cap || b->l || b->h)
+		b->i++;
+	else if (b->ll || b->hh)
+		b->i += 2;
 }
 
 void	sign_search(t_args *b, char *str)

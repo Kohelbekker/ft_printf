@@ -50,13 +50,16 @@ char		*write_after_padding(t_args *b, char c, char *str, char *tmp)
 void		parse_char_flag(t_args *b, char c, char *str)
 {
 	char	*tmp;
-	int		i;
 	int		len;
 
+	if (str == NULL)
+	{
+		add_to_buffer(b, "(null)", 0, 6);
+		return ;
+	}
 	len = b->flag == 'c' ? 1 : ft_strlen((char *)str);
 	if (b->flag == 's')
 		len = (b->prec != -1 && b->prec < len) ? b->prec : len;
-	i = 0;
 	if (b->width > len)
 	{
 		tmp = (char *)malloc(b->width + 1);

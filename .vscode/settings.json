@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.tpl": "smarty",
+    "*.master": "smarty",
+    "ft_printf.h": "c"
+  }
+}
