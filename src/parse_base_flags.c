@@ -9,9 +9,9 @@ char		*base_itoa(t_args *b, unsigned long long int a, int base)
 	int						i;
 	int						prec;
 
+	if (b->prec == 0 && a == 0)
+		return (b->flag != 'o' || !b->zero_x) ? "" : "0";
 	prec = b->prec > 0 ? b->prec : 0;
-	//i = (b->width - prec > 0) ? b->width - prec : 0;
-	//i = (b->zero_x && b->flag != 'o');
 	i = 0;
 	shift = (b->flag == 'X') ? 7 : 39;
 	pref = (b->flag == 'o') ? 1 : 2;
@@ -101,5 +101,7 @@ void	base_flags(va_list argptr, t_args *b)
 		a = (unsigned char)va_arg(argptr, unsigned int);
 	else
 		a = va_arg(argptr, unsigned int);
+	if (a == 0 && b->flag != 'o')
+		b->zero_x = 0;
 	parse_base_flag(b, a, base);
 }

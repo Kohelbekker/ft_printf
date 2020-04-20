@@ -13,23 +13,23 @@ int			ft_findlen(unsigned long long int n, int base)
 char					*ft_new_itoa(t_args *b, long long int n)
 {
 	char				*str;
-	long long int		k;
+	unsigned long long int		k;
 	int					len;
 	int					i;
 
-	i = (b->width > b->prec) ? b->width - (b->prec > 0 ? b->prec : 0) - 1 : 0;
+	i = 0;
 	k = (n < 0) ? -n : n;
 	len = (b->prec > ft_findlen(k, 10)) ? b->prec : ft_findlen(k, 10);
 	len += (b->space || b->plus || n < 0) ? 1 : 0;
 	str = ft_strnew(len);
-	str[--len] = k % 10 + 48;
+	str[--len] = (b->prec != 0 || n != 0) ? k % 10 + 48 : '\0';
 	while ((k = k / 10))
 		str[--len] = (k % 10) + 48;
 	while(str[i] && !ft_isdigit(str[i]))
 		str[i++] = '0';
 	if (n < 0)
 		str[0] = '-';
-	else if (b->plus && n > 0)
+	else if (b->plus && n >= 0)
 		str[0] = '+';
 	else if (b->space)
 		str[0] = ' ';

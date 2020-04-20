@@ -47,22 +47,30 @@ char		*write_after_padding(t_args *b, char c, char *str, char *tmp)
 	return (tmp);
 }
 
+char		*null_str(t_args *b)
+{
+	if (b->prec == -1 || b->prec > 5)
+	{
+		return ("(null)");
+	}
+	else
+		return "";
+}
+
 void		parse_char_flag(t_args *b, char c, char *str)
 {
 	char	*tmp;
 	int		len;
 
-	if (str == NULL)
-	{
-		add_to_buffer(b, "(null)", 0, 6);
-		return ;
-	}
+	if (b->flag == 's')
+		str = (str != NULL) ? str : null_str(b);
 	len = b->flag == 'c' ? 1 : ft_strlen((char *)str);
 	if (b->flag == 's')
 		len = (b->prec != -1 && b->prec < len) ? b->prec : len;
 	if (b->width > len)
 	{
 		tmp = (char *)malloc(b->width + 1);
+		ft_memset(tmp, ' ', b->width);
 		tmp[b->width] = '\0';
 		if (b->minus)
 			b->flag == 's' ? ft_memcpy(tmp, str, len) : ft_memset(tmp, c, len);
