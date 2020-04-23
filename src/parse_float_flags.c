@@ -1,24 +1,9 @@
 #include "../includes/ft_printf.h"
 
-long long						find_multiplier(t_args *b)
-{
-	long long multip;
-	int	i;
-
-	i = 1;
-	multip = 10;
-	while (i < b->prec)
-	{
-		multip *= 10;
-		i++;
-	}
-	return (multip);
-}
-
 long double 		round_up(t_args *b, long double n)
 {
-	int mult;
-	int pow;
+	int 		mult;
+	int			pow;
 	long double start;
 
 	start = n;
@@ -33,16 +18,14 @@ long double 		round_up(t_args *b, long double n)
 	return (n);
 }
 
-char					*ft_float_itoa(t_args *b, long double n)
+char					*ft_float_itoa(t_args *b, long double n, int prec)
 {
 	long double		num;
-	long long			full;
-	int						prec;
-	char					*tmp;
-	char					*str;
-	int						len;
+	long long		full;
+	char			*tmp;
+	char			*str;
+	int				len;
 
-	prec = b->prec;
 	len = b->prec + ft_findlen((int)(n < 0) ? -n : n, 10) + 1 + (n < 0);
 	str = ft_strnew(len);
 	num = round_up(b, (n < 0) ? -n : n);
@@ -52,19 +35,37 @@ char					*ft_float_itoa(t_args *b, long double n)
 	num -= (unsigned long long)num;
 	if (prec > 0)
 		str[ft_strlen(str)] = '.';
-	if (prec != 0)
+	while (prec > 0 && prec--)
 	{
-		while (prec--)
-		{
-			if (prec <= 15)
-				num += 0.000000000000001;
-			num *= 10;
-			full = (unsigned long long)num;
-			num -= full;
-			str[ft_findlen((int)(n < 0) ? -n : n, 10) + (b->prec - prec)] = full + 48;
-		}
+		if (prec <= 15)
+			num += 0.000000000000001;
+		num *= 10;
+		full = (unsigned long long)num;
+		num -= full;
+		str[ft_findlen((int)(n < 0) ? -n : n, 10) + (b->prec - prec)] = full + 48;
 	}
 	return (str);
+}
+
+void		float_padding(t_args *b, char *tmp, char *num, int len)
+{
+	int		i;
+	int		k;
+
+
+	i = b->width - len;
+	k = 0;
+	while (tmp[i])
+	{
+		tmp[i] = num[k];
+		i++;
+		k++;
+	}
+	if (b->zero && !ft_isdigit(num[0]))
+	{
+		tmp[0] = num[0];
+		tmp[b->width - len] = '0';
+	}
 }
 
 void		parse_float_flag(t_args *b, long double a)
@@ -72,18 +73,13 @@ void		parse_float_flag(t_args *b, long double a)
 	char	*num;
 	char	*tmp;
 	int		len;
-	int		i;
-	int		k;
 
-
-	k = 0;
-	i = 0;
 	if (a == INFINITY)
 	{
 		add_to_buffer(b, "inf", 0, ft_strlen("inf"));
 		return ;
 	}
-	num = ft_float_itoa(b, a);
+	num = ft_float_itoa(b, a, b->prec);
 	len = ft_strlen(num);
 	if (b->width > len)
 	{
@@ -93,21 +89,7 @@ void		parse_float_flag(t_args *b, long double a)
 		if (b->minus)
 			ft_memcpy(tmp, num, len);
 		else
-		{
-			i = b->width - len;
-			k = 0;
-			while (tmp[i])
-			{
-				tmp[i] = num[k];
-				i++;
-				k++;
-			}
-			if (b->zero && !ft_isdigit(num[0]))
-			{
-				tmp[0] = num[0];
-				tmp[b->width - len] = '0';
-			}
-		}
+			float_padding(b, tmp, num, len);
 	}
 	else
 		tmp = ft_strdup(num);

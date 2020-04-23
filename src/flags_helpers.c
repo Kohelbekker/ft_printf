@@ -22,3 +22,18 @@ void	width_search(t_args *b, char *str)
 		b->width += str[b->i++] - '0';
 	}
 }
+
+long long						find_multiplier(t_args *b)
+{
+	long long 	multip;
+	int			i;
+
+	i = 1;
+	multip = 10;
+	while (i < b->prec)
+	{
+		multip *= 10;
+		i++;
+	}
+	return (multip);
+}

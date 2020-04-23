@@ -2,8 +2,8 @@
 
 char		*base_itoa(t_args *b, unsigned long long int a, int base, int i)
 {
-	char					*res;
-	int						len;
+	char				*res;
+	int					len;
 
 	if (b->prec == 0 && a == 0)
 		return (b->flag != 'o' || !b->zero_x) ? "" : "0";
@@ -32,9 +32,9 @@ char		*base_itoa(t_args *b, unsigned long long int a, int base, int i)
 
 void		parse_base_flag(t_args *b, unsigned long long int a, int base, int i)
 {
-	char	*num;
-	char	*tmp;
-	int		k;
+	char			*num;
+	char			*tmp;
+	int				k;
 
 	num = base_itoa(b, a, base, 0);
 	if (b->width > ft_strlen(num))

@@ -36,16 +36,32 @@ char					*ft_new_itoa(t_args *b, long long int n)
 	return (str);
 }
 
+void		digit_padding(t_args *b, char *num, char *tmp, int len)
+{
+	int		i;
+	int		k;
+
+	i = b->width - len;
+	k = 0;
+	while (tmp[i])
+	{
+		tmp[i] = num[k];
+		i++;
+		k++;
+	}
+	if (b->zero && b->prec == -1 && !ft_isdigit(num[0]))
+	{
+		tmp[0] = num[0];
+		tmp[b->width - len] = '0';
+	}
+}
+
 void		parse_digit_flag(t_args *b, long long int a)
 {
 	char	*num;
 	char	*tmp;
 	int		len;
-	int		i;
-	int		k;
 
-	k = 0;
-	i = 0;
 	num = ft_new_itoa(b, a);
 	len = ft_strlen(num);
 	if (b->width > len)
@@ -56,21 +72,7 @@ void		parse_digit_flag(t_args *b, long long int a)
 		if (b->minus)
 			ft_memcpy(tmp, num, len);
 		else
-		{
-			i = b->width - len;
-			k = 0;
-			while (tmp[i])
-			{
-				tmp[i] = num[k];
-				i++;
-				k++;
-			}
-			if (b->zero && b->prec == -1 && !ft_isdigit(num[0]))
-			{
-				tmp[0] = num[0];
-				tmp[b->width - len] = '0';
-			}
-		}
+			digit_padding(b, num, tmp, len);
 	}
 	else
 		tmp = ft_strdup(num);
