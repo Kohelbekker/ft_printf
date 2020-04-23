@@ -37,7 +37,7 @@ void	no_type(t_args *b)
 	str[len] = '\0';
 	str[0] = '%';
 	while(++i < len)
-		noflag_signs(b, str, i);
+		notype_signs(b, str, i);
 	add_to_buffer(b, str, 0, ft_strlen(str));
 	if (b->width > 0)
 		add_to_buffer(b, ft_itoa(b->width), 0, ft_strlen(ft_itoa(b->width)));

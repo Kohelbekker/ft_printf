@@ -71,7 +71,7 @@ void	flag_search(va_list p, t_args *b, char *str)
 	{
 		if (b->flag == 'u')
 			b->zero_x = 0;
-		base_flags(p, b);
+		base_flags(p, b, 0);
 	}
 	else if (b->flag == 'd' || b->flag == 'i')
 		number_flags(p, b);

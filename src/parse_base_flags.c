@@ -4,26 +4,20 @@ char		*base_itoa(t_args *b, unsigned long long int a, int base, int i)
 {
 	char					*res;
 	int						len;
-	int						shift;
-	int						pref;
-	int						prec;
 
 	if (b->prec == 0 && a == 0)
 		return (b->flag != 'o' || !b->zero_x) ? "" : "0";
-	prec = b->prec > 0 ? b->prec : 0;
-	shift = (b->flag == 'X') ? 7 : 39;
-	pref = (b->flag == 'o') ? 1 : 2;
 	len = (b->prec > ft_findlen(a, base)) ? b->prec : ft_findlen(a, base);
-	len += (b->zero_x && !(b->flag == 'o' && prec > ft_findlen(a, base))) ? pref : 0;
+	len += (b->zero_x && !(b->flag == 'o' && b->prec > ft_findlen(a, base))) ?
+	((b->flag == 'o') ? 1 : 2) : 0;
 	res = ft_strnew(len);
-	res[len] = '\0';
 	res[--len] = a % base + 48;
-	res[len] += (res[len] > '9') ? shift : 0;
+	res[len] += (res[len] > '9') ? ((b->flag == 'X') ? 7 : 39) : 0;
 	while ((a = a / base))
 	{
 		res[--len] = (a % base) + 48;
 		if ((a % base) + 48 > '9')
-			res[len] += shift;
+			res[len] += (b->flag == 'X') ? 7 : 39;
 	}
 	while(res[i] != '\0' && res[i] == ' ')
 		res[i++] = '0';
@@ -36,35 +30,25 @@ char		*base_itoa(t_args *b, unsigned long long int a, int base, int i)
 	return(res);
 }
 
-void		parse_base_flag(t_args *b, unsigned long long int a, int base)
+void		parse_base_flag(t_args *b, unsigned long long int a, int base, int i)
 {
 	char	*num;
 	char	*tmp;
-	int		len;
-	int		i;
 	int		k;
 
-	k = 0;
-	i = 0;
 	num = base_itoa(b, a, base, 0);
-	len = ft_strlen(num);
-	if (b->width > len)
+	if (b->width > ft_strlen(num))
 	{
-		tmp = (char *)malloc(b->width + 1);
-		tmp[b->width] = '\0';
+		tmp = ft_strnew(b->width);
 		ft_memset(tmp, (b->zero && b->prec == -1) ? '0' : ' ', b->width);
 		if (b->minus)
-			ft_memcpy(tmp, num, len);
+			ft_memcpy(tmp, num, ft_strlen(num));
 		else
 		{
-			i = b->width - len;
+			i = b->width - ft_strlen(num);
 			k = 0;
 			while (tmp[i])
-			{
-				tmp[i] = num[k];
-				i++;
-				k++;
-			}
+				tmp[i++] = num[k++];
 		}
 	}
 	else
@@ -73,11 +57,10 @@ void		parse_base_flag(t_args *b, unsigned long long int a, int base)
 	free(tmp);
 }
 
-void	base_flags(va_list argptr, t_args *b)
+void	base_flags(va_list argptr, t_args *b, int base)
 {
 	unsigned long long int	a;
 	void					*tmp;
-	int						base;
 
 	if (b->flag == 'x' || b->flag == 'X' || b->flag == 'o' || b->flag == 'p')
 		base = (b->flag == 'o')  ? 8 : 16;
@@ -101,5 +84,5 @@ void	base_flags(va_list argptr, t_args *b)
 		a = va_arg(argptr, unsigned int);
 	if (a == 0 && b->flag != 'o')
 		b->zero_x = 0;
-	parse_base_flag(b, a, base);
+	parse_base_flag(b, a, base, 0);
 }

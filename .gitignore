@@ -5,4 +5,6 @@ a.out
 libftprintf.a
 libft/*.o
 libft/libft.a
-
+.vscode/
+includes/*.gch
+libft/*.gch
