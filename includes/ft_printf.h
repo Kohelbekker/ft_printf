@@ -40,5 +40,6 @@ void			number_flags(va_list argptr, t_args *b);
 void  		float_flags();
 void			base_flags();
 int    		ft_printf(const char *format, ...);
+void			no_type(t_args *b);
 
 #endif

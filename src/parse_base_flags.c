@@ -1,18 +1,16 @@
 #include "../includes/ft_printf.h"
 
-char		*base_itoa(t_args *b, unsigned long long int a, int base)
+char		*base_itoa(t_args *b, unsigned long long int a, int base, int i)
 {
 	char					*res;
 	int						len;
 	int						shift;
 	int						pref;
-	int						i;
 	int						prec;
 
 	if (b->prec == 0 && a == 0)
 		return (b->flag != 'o' || !b->zero_x) ? "" : "0";
 	prec = b->prec > 0 ? b->prec : 0;
-	i = 0;
 	shift = (b->flag == 'X') ? 7 : 39;
 	pref = (b->flag == 'o') ? 1 : 2;
 	len = (b->prec > ft_findlen(a, base)) ? b->prec : ft_findlen(a, base);
@@ -48,7 +46,7 @@ void		parse_base_flag(t_args *b, unsigned long long int a, int base)
 
 	k = 0;
 	i = 0;
-	num = base_itoa(b, a, base);
+	num = base_itoa(b, a, base, 0);
 	len = ft_strlen(num);
 	if (b->width > len)
 	{

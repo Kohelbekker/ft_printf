@@ -57,58 +57,13 @@ void	sign_search(t_args *b, char *str)
 	b->i = i;
 }
 
-void	no_flag(t_args *b)
-{
-	char	*str;
-	int		len;
-	int		i;
-
-	i = 1;
-	len = 1;
-	len += (b->space + b->minus + b->zero + b->plus);
-	str = ft_strnew(len + 1);
-	str[len] = '\0';
-	str[0] = '%';
-	while(i < len)
-	{
-		if (b->space)
-		{
-			str[i] = ' ';
-			b->space = 0;
-		}
-		else if (b->zero)
-		{
-			str[i] = '0';
-			b->zero = 0;
-		}
-		else if (b->plus)
-		{
-			str[i] = '+';
-			b->plus = 0;
-		}
-		else if (b->minus)
-		{
-			str[i] = '-';
-			b->minus = 0;
-		}
-		i++;
-	}
-	add_to_buffer(b, str, 0, ft_strlen(str));
-	if (b->width > 0)
-		add_to_buffer(b, ft_itoa(b->width), 0, ft_strlen(ft_itoa(b->width)));
-	if (b->prec != -1)
-	{
-		add_to_buffer(b, ".", 0, 1);
-		add_to_buffer(b, ft_itoa(b->prec), 0, ft_strlen(ft_itoa(b->prec)));
-	}
-}
-
 void	flag_search(va_list p, t_args *b, char *str)
 {
 	b->flag = str[b->i];
 
 	if (b->flag == 'c' || b->flag == 's')
-		b->flag == 'c' ? parse_char_flag(b, va_arg(p, int), NULL) : parse_char_flag(b, 0, va_arg(p, char*));
+		b->flag == 'c' ? parse_char_flag(b, va_arg(p, int), NULL) :
+		parse_char_flag(b, 0, va_arg(p, char*));
 	else if (b->flag == 'f')
 		float_flags(p, b);
 	else if (b->flag == 'u' || b->flag == 'o' || b->flag == 'x' ||
@@ -124,7 +79,7 @@ void	flag_search(va_list p, t_args *b, char *str)
 		flag_sign(b);
 	else
 	{
-		no_flag(b);
+		no_type(b);
 		return ;
 	}
 	b->i++;

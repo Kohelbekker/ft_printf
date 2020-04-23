@@ -2,7 +2,7 @@
 
 int		check_length(int i)
 {
-	int length;
+	int	length;
 
 	length = 0;
 	while (i > 9)
