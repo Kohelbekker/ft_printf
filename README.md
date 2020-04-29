@@ -121,6 +121,7 @@ Used with a, A, e, E, f, F, g or G it forces the written output to contain a dec
 </table>
 
 <h2>Bonuses:</h2>
+
 * '*' flag
 
 * '%k' - prints current date
