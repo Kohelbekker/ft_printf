@@ -14,8 +14,14 @@ int		check_length(int i)
 	return (length);
 }
 
-void	width_search(t_args *b, char *str)
+void	width_search(t_args *b, va_list argptr, char *str)
 {
+	if (str[b->i] == '*')
+	{
+		b->width = va_arg(argptr, int);
+		b->i++;
+		return ;
+	}
 	while (str[b->i] && ft_isdigit(str[b->i]))
 	{
 		b->width *= 10;

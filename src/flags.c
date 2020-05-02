@@ -1,8 +1,14 @@
 #include "../includes/ft_printf.h"
 
-void	precision_search(t_args *b, char *str)
+void	precision_search(t_args *b, va_list argptr, char *str)
 {
 	b->i++;
+	if (str[b->i] == '*')
+	{
+		b->prec = va_arg(argptr, int);
+		b->i++;
+		return ;
+	}
 	while(str[b->i] && ft_isdigit(str[b->i]))
 	{
 		b->prec *= 10;
@@ -77,6 +83,8 @@ void	flag_search(va_list p, t_args *b, char *str)
 		number_flags(p, b);
 	else if (b->flag == '%')
 		flag_sign(b);
+	else if (b->flag == 'k' || b->flag == 't')
+		additional_flags(b);
 	else
 	{
 		no_type(b);
@@ -88,11 +96,11 @@ void	flag_search(va_list p, t_args *b, char *str)
 void	find_flag(va_list argptr, t_args *b, char *str)
 {
 	sign_search(b, str);
-	width_search(b, str);
+	width_search(b, argptr, str);
 	if (str[b->i] == '.')
 	{
 		b->prec = 0;
-		precision_search(b, str);
+		precision_search(b, argptr, str);
 	}
 	size_search(b, str);
 	flag_search(argptr, b, str);

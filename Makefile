@@ -12,7 +12,8 @@ FILES	= ft_printf.c \
 				parse_char_flag.c \
 				parse_digit_flag.c \
 				parse_float_flags.c \
-				no_type.c
+				no_type.c \
+				additional_flags.c
 
 SRCS = $(addprefix $(SRC_D)/,$(FILES))
 OBJS = $(addprefix $(OBJ_D)/,$(FILES:%.c=%.o))

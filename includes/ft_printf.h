@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <time.h>
 
 typedef struct	s_args
 {
@@ -29,7 +30,7 @@ typedef struct	s_args
 }				t_args;
 
 int									check_length(int i);
-void								width_search(t_args *b, char *str);
+void								width_search(t_args *b, va_list argptr, char *str);
 void								flag_sign(t_args *b);
 void								find_flag(va_list argptr, t_args *b, char *str);
 void								add_to_buffer(t_args *b, char *str, int start, int end);
@@ -42,5 +43,6 @@ void								base_flags();
 int    							ft_printf(const char *format, ...);
 void								no_type(t_args *b);
 long long						find_multiplier(t_args *b);
+void   							additional_flags(t_args *b);
 
 #endif
