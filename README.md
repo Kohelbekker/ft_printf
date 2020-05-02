@@ -126,6 +126,8 @@ Used with a, A, e, E, f, F, g or G it forces the written output to contain a dec
 
 * '%k' - prints current date
 
+* '%t' - printf current time
+
 * '%r' -repeate previous argument
 
 
