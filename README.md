@@ -128,8 +128,6 @@ Used with a, A, e, E, f, F, g or G it forces the written output to contain a dec
 
 * '%t' - printf current time
 
-* '%r' -repeate previous argument
-
 
 <h2>Links:</h2>
 1. https://stackoverflow.com/questions/1449805/how-to-format-a-number-from-1123456789-to-1-123-456-789-in-c
